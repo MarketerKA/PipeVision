@@ -5,7 +5,6 @@ from aiogram.types import FSInputFile
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import Router
 from aiogram.utils.i18n import I18n
-from aiogram import exceptions
 from video_processor import process_video  # Import the video processing function
 
 # Initialize bot with token
@@ -25,10 +24,11 @@ async def start_command(message: types.Message):
 async def handle_video(message: types.Message):
     await message.reply("Processing your video...")
 
-    # Download video
+    # Download the video file
     video = message.video
+    file_info = await bot.get_file(video.file_id)
     video_path = f"{video.file_unique_id}.mp4"
-    await message.video.download(destination=video_path)
+    await bot.download_file(file_info.file_path, destination=video_path)
 
     # Process the video using the external processing logic
     output_video_path = f"processed_{video.file_unique_id}.mp4"
