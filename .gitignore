@@ -1,0 +1,36 @@
+# Ignore the virtual environment folder
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# Video files (optional, if you don’t want to include large video files in the repository)
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore the output of coverage tool
+htmlcov/
+.coverage
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
