@@ -14,43 +14,34 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 router = Router()
 
-# Start command handler
 @router.message(Command("start"))
 async def start_command(message: types.Message):
     await message.answer("Send me a video and I'll process it with filters!")
 
-# Handle video upload
 @router.message(F.content_type == "video")
 async def handle_video(message: types.Message):
     await message.reply("Processing your video...")
 
-    # Download the video file
     video = message.video
     file_info = await bot.get_file(video.file_id)
     video_path = f"{video.file_unique_id}.mp4"
     await bot.download_file(file_info.file_path, destination=video_path)
 
-    # Process the video using the external processing logic
     output_video_path = f"processed_{video.file_unique_id}.mp4"
     process_video(video_path, output_video_path)
 
-    # Send the processed video back to the user
     video_to_send = FSInputFile(output_video_path)
     await message.answer_video(video=video_to_send)
 
-    # Clean up the files
     os.remove(video_path)
     os.remove(output_video_path)
 
-# Error handler for unsupported content
 @router.message(F.content_type.in_({'text', 'photo', 'document', 'audio'}))
 async def unsupported_message(message: types.Message):
     await message.reply("Please send me a video to process!")
 
-# Register router
 dp.include_router(router)
 
-# Main function to start the bot
 async def main():
     await dp.start_polling(bot)
 
